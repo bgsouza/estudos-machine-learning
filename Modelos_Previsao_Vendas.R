@@ -2,7 +2,7 @@
 vendas <- read.csv("vendas.csv", sep=";", dec=",")
 names(vendas) <- c('date', 'month', 'weekday', 'margin', 'sales', 'discount', 'outdisc', 'outmg')
 
-# Teste de consistência dos dados
+# Teste de consistï¿½ncia dos dados
 any(is.na(vendas))
 sum(is.na(vendas))
 colSums(is.na(vendas))
@@ -10,9 +10,9 @@ colSums(is.na(vendas))
 # Tratamento dos caracteres quebrados
 
 library(dplyr)
-vendas %>%
-  select (weekday) %>%
-  distinct
+#vendas %>%
+#  select (weekday) %>%
+#  distinct
 
 vendas$date <- as.factor(vendas$date)
 
@@ -35,24 +35,24 @@ vendas$month <- factor(vendas$month,
 vendas$weekday <- as.numeric(vendas$weekday)
 vendas$month <- as.numeric(vendas$month)
 
-# Correlações
+# CorrelaÃ§Ãµes
 cor(vendas)
 summary(vendas)
 
 install.packages("ggplot2")
 library(ggplot2)
 
-boxplot(vendas)
+#boxplot(vendas)
 
-plot(vendas$sales~vendas$date, col=vendas$month)
-plot(vendas$sales~vendas$month)
-plot(vendas$sales~vendas$weekday)
-plot(vendas$sales~vendas$margin)
-plot(vendas$sales~vendas$discount)
+#plot(vendas$sales~vendas$date, col=vendas$month)
+#plot(vendas$sales~vendas$month)
+#plot(vendas$sales~vendas$weekday)
+#plot(vendas$sales~vendas$margin)
+#plot(vendas$sales~vendas$discount)
 
-hist(vendas$sales)
-hist(vendas$margin)
-hist(vendas$discount)
+#hist(vendas$sales)
+#hist(vendas$margin)
+#hist(vendas$discount)
 
 # Tirando outliers
 install.packages("plyr")
@@ -67,7 +67,7 @@ vendas <- vendas[vendas$outdisc==0,]
 treino <- vendas[1:365,]
 teste <- vendas[366:396,]
 
-# Regressão Linear
+# RegressÃ£o Linear
 mod <- lm(sales~month+weekday+discount, data=treino)
 summary(mod)
 
@@ -86,7 +86,7 @@ mAR <- lm(sales~vendasAR8 +  vendasAR9 + vendasAR11 + vendasAR10 + weekday + mar
 summary(mAR)
 
 
-# Arvore de decisão
+# Arvore de decisÃ£o
 install.packages("party")
 library(party)
 
@@ -117,28 +117,5 @@ svf <- as.data.frame(row.names(testeAR))
 svf$venda <-p
 # Nomes das colunas
 names(svf) <- c("Id", "Expected")
-# Gravação em disco do arquivo a ser submetido no site Kaggle
+# GravaÃ§Ã£oo em disco do arquivo a ser submetido no site Kaggle
 write.csv(svf, file="submit2.csv", row.names = FALSE)
-
-
-'
-Modelos
-
-Tipo  R2        P       Erro      Modelo
-LM    0.003143  NOK     43170     sales~margin
-LM    0.6425    OK      25890     sales~discount
-LM    0.6888    OK      24220     sales~month+weekday+discount
-LM    0.6904    OK      24190     sales~date+month+weekday+discount
-
-
-### Sem outliers e com data categórica
-Tipo  R2        P       Erro      Modelo
-LM    0.001655  NOK     34140     sales~margin
-LM    0.5856    OK      22000     sales~discount
-LM    0.654     OK      20150     sales~month+weekday+discount
-AR    0.677     OK      24450     sales~vendasAR8 +  vendasAR9 + vendasAR11 + discount
-AR    0.7509    OK      21530     sales~vendasAR8 +  vendasAR9 + vendasAR11 + weekday + margin + discount
-AR    0.7605    OK      21140     sales~vendasAR8 +  vendasAR9 + vendasAR11 + vendasAR10 + weekday + margin + discount
-RF    0.77      -         -       sales~month+weekday+discount
-RF    0.773     -         -       sales~vendasAR8 +  vendasAR9 + vendasAR11 + vendasAR10 + weekday + margin + discount
-'

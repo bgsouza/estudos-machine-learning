@@ -1,0 +1,19 @@
+Modelos
+
+Tipo  R2        P       Erro      Modelo
+LM    0.003143  NOK     43170     sales~margin
+LM    0.6425    OK      25890     sales~discount
+LM    0.6888    OK      24220     sales~month+weekday+discount
+LM    0.6904    OK      24190     sales~date+month+weekday+discount
+
+
+### Sem outliers e com data categórica
+Tipo  R2        P       Erro      Modelo
+LM    0.001655  NOK     34140     sales~margin
+LM    0.5856    OK      22000     sales~discount
+LM    0.654     OK      20150     sales~month+weekday+discount
+AR    0.677     OK      24450     sales~vendasAR8 +  vendasAR9 + vendasAR11 + discount
+AR    0.7509    OK      21530     sales~vendasAR8 +  vendasAR9 + vendasAR11 + weekday + margin + discount
+AR    0.7605    OK      21140     sales~vendasAR8 +  vendasAR9 + vendasAR11 + vendasAR10 + weekday + margin + discount
+RF    0.77      -         -       sales~month+weekday+discount
+RF    0.773     -         -       sales~vendasAR8 +  vendasAR9 + vendasAR11 + vendasAR10 + weekday + margin + discount
